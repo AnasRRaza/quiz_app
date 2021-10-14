@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import './App.css';
 import Cards from './components/Cards';
+import ResultCard from './components/ResultCard';
 import { getQuestion } from './container';
 import { Question } from "./types/index";
 
@@ -8,6 +9,8 @@ function App() {
 
   let [questions, setQuestions] = useState<Question[]>([]);
   let [questionNumber, setQuestionNumber] = useState(0);
+  let [score, setScore] = useState(0);
+  const [showResult, setShowResult] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -17,28 +20,35 @@ function App() {
     fetchData();
   }, []);
 
-  const handleSubmit = (e: React.FormEvent<EventTarget>) => {
+  const handleSubmit = (e: React.FormEvent<EventTarget>, userAns: string) => {
     e.preventDefault();
-    if (questionNumber !== questions.length - 1) {
-      setQuestionNumber(++questionNumber);
+    // check user answer from correct answer
+    const checkAns: Question = questions[questionNumber];
+    if (userAns === checkAns.answer) {
+      setScore(++score);
+    }
+    // show result
+    if (questionNumber === questions.length - 1) {
+      setShowResult(true);
     }
     else {
-      alert("Quiz done")
-      setQuestionNumber(0);
+      setQuestionNumber(++questionNumber);
     }
   }
 
-  if (questions.length === 0)
-    return <h1>Loading</h1>
-
   return (
-    <div>
-      <Cards
-        questions={questions[questionNumber].question}
-        options={questions[questionNumber].options}
-        handleSubmit={handleSubmit}
-      />
-    </div >
+    questions.length === 0 ? <h1>Loading</h1> :
+      <>
+        {showResult ?
+          <ResultCard score={score} totalQuestions={questions.length} />
+          :
+          <Cards
+            questions={questions[questionNumber].question}
+            options={questions[questionNumber].options}
+            handleSubmit={handleSubmit}
+          />
+        }
+      </>
   );
 }
 
