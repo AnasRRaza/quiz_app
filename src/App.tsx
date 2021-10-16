@@ -2,8 +2,9 @@ import React, { useEffect, useState } from 'react';
 import './App.css';
 import Cards from './components/Cards';
 import ResultCard from './components/ResultCard';
+import Spinner from './components/Spinner';
 import { getQuestion } from './container';
-import { Question } from "./types/index";
+import { difficulty, Question } from "./types/index";
 
 function App() {
 
@@ -11,14 +12,19 @@ function App() {
   let [questionNumber, setQuestionNumber] = useState(0);
   let [score, setScore] = useState(0);
   const [showResult, setShowResult] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [restart, setRestart] = useState(false);
+
+
 
   useEffect(() => {
     const fetchData = async () => {
-      const data: Question[] = await getQuestion(5, "easy");
+      const data: Question[] = await getQuestion(5, difficulty.EASY);
       setQuestions(data);
+      setLoading(true)
     }
     fetchData();
-  }, []);
+  }, [restart]);
 
   const handleSubmit = (e: React.FormEvent<EventTarget>, userAns: string) => {
     e.preventDefault();
@@ -27,7 +33,6 @@ function App() {
     if (userAns === checkAns.answer) {
       setScore(++score);
     }
-    // show result
     if (questionNumber === questions.length - 1) {
       setShowResult(true);
     }
@@ -36,11 +41,22 @@ function App() {
     }
   }
 
+  const tryAgain = () => {
+    setRestart(true);
+    console.log("running")
+    // window.location.reload();
+  }
+
   return (
-    questions.length === 0 ? <h1>Loading</h1> :
+    questions.length === 0 ? <Spinner /> :
       <>
+        {!loading && <Spinner />}
         {showResult ?
-          <ResultCard score={score} totalQuestions={questions.length} />
+          <ResultCard
+            score={score}
+            totalQuestions={questions.length}
+            tryAgain={tryAgain}
+          />
           :
           <Cards
             questions={questions[questionNumber].question}

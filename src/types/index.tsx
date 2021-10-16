@@ -18,7 +18,7 @@ export type Question = {
   options: string[]
 }
 
-// types for display questions in cards
+// Cards propTypes 
 
 export type questionPropTypes = {
   questions: string
@@ -26,9 +26,18 @@ export type questionPropTypes = {
   handleSubmit: (e: React.FormEvent<EventTarget>, userAns: string) => void
 }
 
-// types for show data in result card
+// Result Cards propTypes
 
 export type ResultPropTypes = {
   score: number;
   totalQuestions: number;
+  tryAgain: any
+}
+
+// types for select difficulty level
+
+export enum difficulty {
+  EASY = "easy",
+  MEDIUM = "medium",
+  HARD = "hard",
 }
