@@ -6,7 +6,7 @@ import Spinner from './components/Spinner';
 import { getQuestion } from './container';
 import { difficulty, Question } from "./types/index";
 
-function App() {
+const App: React.FC = () => {
 
   let [questions, setQuestions] = useState<Question[]>([]);
   let [questionNumber, setQuestionNumber] = useState(0);
@@ -15,15 +15,16 @@ function App() {
   const [loading, setLoading] = useState(false);
   const [restart, setRestart] = useState(false);
 
-
-
   useEffect(() => {
+    setLoading(true)
     const fetchData = async () => {
       const data: Question[] = await getQuestion(5, difficulty.EASY);
       setQuestions(data);
       setLoading(true)
     }
     fetchData();
+    setRestart(false);
+    setLoading(false);
   }, [restart]);
 
   const handleSubmit = (e: React.FormEvent<EventTarget>, userAns: string) => {
@@ -41,15 +42,21 @@ function App() {
     }
   }
 
+  // for restart quiz
   const tryAgain = () => {
     setRestart(true);
-    console.log("running")
-    // window.location.reload();
+    setLoading(false);
+    console.log("running");
+    setQuestions([]);
+    setQuestionNumber(0);
+    setScore(0);
+    setShowResult(false);
   }
 
   return (
     questions.length === 0 ? <Spinner /> :
       <>
+        <h1 className="title">Quiz Application</h1>
         {!loading && <Spinner />}
         {showResult ?
           <ResultCard
@@ -61,7 +68,9 @@ function App() {
           <Cards
             questions={questions[questionNumber].question}
             options={questions[questionNumber].options}
+            questionNumber={questionNumber}
             handleSubmit={handleSubmit}
+            totalQuestions={questions.length}
           />
         }
       </>

@@ -24,6 +24,8 @@ export type questionPropTypes = {
   questions: string
   options: string[]
   handleSubmit: (e: React.FormEvent<EventTarget>, userAns: string) => void
+  questionNumber: number
+  totalQuestions: number
 }
 
 // Result Cards propTypes
