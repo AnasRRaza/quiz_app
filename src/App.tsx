@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import './App.css';
 import Cards from './components/Cards';
+import Footer from './components/Footer';
 import ResultCard from './components/ResultCard';
 import Spinner from './components/Spinner';
 import { getQuestion } from './container';
@@ -55,7 +56,7 @@ const App: React.FC = () => {
 
   return (
     questions.length === 0 ? <Spinner /> :
-      <>
+      <div className="app">
         <h1 className="title">Quiz Application</h1>
         {!loading && <Spinner />}
         {showResult ?
@@ -71,9 +72,10 @@ const App: React.FC = () => {
             questionNumber={questionNumber}
             handleSubmit={handleSubmit}
             totalQuestions={questions.length}
-          />
-        }
-      </>
+            />
+          }
+          <Footer/>
+      </div>
   );
 }
 
