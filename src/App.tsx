@@ -5,6 +5,7 @@ import Footer from './components/Footer';
 import ResultCard from './components/ResultCard';
 import Spinner from './components/Spinner';
 import { getQuestion } from './container';
+import { initNoti } from './firebase';
 import { difficulty, Question } from "./types/index";
 
 const App: React.FC = () => {
@@ -15,6 +16,10 @@ const App: React.FC = () => {
   const [showResult, setShowResult] = useState(false);
   const [loading, setLoading] = useState(false);
   const [restart, setRestart] = useState(false);
+
+  useEffect(() => {
+    initNoti();
+  }, []);
 
   useEffect(() => {
     setLoading(true)
