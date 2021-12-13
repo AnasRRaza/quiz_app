@@ -1,6 +1,5 @@
 const CACHE_NAME = "quiz-cache";
 
-
 const CacheFiles = [
   "/",
   "/index.html",
@@ -10,6 +9,7 @@ const CacheFiles = [
   "/static/js/bundle.js",
   "/static/js/0.chunk.js",
   "/static/js/main.chunk.js",
+  "/static/js/vendors~main.chunk.js",
 ];
 
 const self = this;
@@ -19,7 +19,6 @@ self.addEventListener('install', (event) => {
   event.waitUntil(
     caches.open(CACHE_NAME)
       .then((cache) => {
-        console.log('Opened cache');
         return cache.addAll(CacheFiles);
       })
   )
@@ -27,13 +26,16 @@ self.addEventListener('install', (event) => {
 
 // Listen for requests
 self.addEventListener('fetch', (event) => {
-  event.respondWith(
-    caches.match(event.request)
-      .then(() => {
-        return fetch(event.request)
-          .catch(() => caches.match(''))
-      })
-  )
+  if (!navigator.onLine) {
+    event.respondWith(
+      caches.match(event.request)
+        .then((res) => {
+          if (res) {
+            return res;
+          }
+        })
+    )
+  }
 });
 
 // Activate the SW

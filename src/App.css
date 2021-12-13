@@ -152,6 +152,31 @@ body {
   cursor: pointer;
 }
 
+.offline-container {
+  height: 100vh;
+  margin: 0;
+  background: #254864;
+  display: flex;
+  align-items: center;
+  text-align: center;
+  justify-content: center;
+}
+
+.wrapper {
+  align-items: center;
+  width: 80%;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  padding: 40px 8%;
+  border-radius: 20px;
+  background: #fff;
+}
+
+.banner {
+  font-size: 2em;
+}
+
 /* Responsive */
 
 @media only screen and (max-width: 600px) {
@@ -161,17 +186,21 @@ body {
     margin: 0 auto;
     padding: 20px;
   }
+
   .result-card {
     width: 70%;
     margin: 0 auto;
     padding: 10px 30px 10px;
   }
+
   .result-card h2 {
     font-size: 16px;
   }
+
   .title {
     margin-top: 30px;
   }
+
   .result {
     font-size: 28px;
   }

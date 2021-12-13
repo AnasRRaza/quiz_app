@@ -53,7 +53,17 @@ const App: React.FC = () => {
     setScore(0);
     setShowResult(false);
   }
-
+  if (!navigator.onLine) {
+    return (
+      <div className='offline-container'>
+        <div className="wrapper">
+          <h2 className="banner">
+            <span>Please go online to start the Quiz.</span>
+          </h2>
+        </div>
+      </div>
+    )
+  }
   return (
     questions.length === 0 ? <Spinner /> :
       <div className="app">
@@ -72,9 +82,9 @@ const App: React.FC = () => {
             questionNumber={questionNumber}
             handleSubmit={handleSubmit}
             totalQuestions={questions.length}
-            />
-          }
-          <Footer/>
+          />
+        }
+        <Footer />
       </div>
   );
 }
